@@ -15,19 +15,23 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'make build-image'
+                sh '''echo "build complete"'''
             }
         }
         stage('EcrPush') {
             steps {
+                sh '''echo "push start"'''
                 script {
                     readProperties(file: 'Makefile.env').each { key, value -> env[key] = value }
                 }
+                sh '''echo "push mid"'''
                 //sh '$(aws ecr get-login --no-include-email --registry-ids $AWS_ACCOUNT_NUMBER)'
                 sh'''
                     
                     aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 399048314510.dkr.ecr.us-east-1.amazonaws.com
                     docker push 399048314510.dkr.ecr.us-east-1.amazonaws.com/awesome-api-repository:$(GIT_COMMIT)
                 '''
+                sh '''echo "push done"'''
                 // script {
                 //     def PUSH_RESULT = sh (
                 //     script: "make push-image",

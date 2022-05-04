@@ -21,7 +21,7 @@ build-image:
 
 .PHONY: push-image
 push-image:
-	@docker push $(AWS_ACCOUNT_NUMBER).dkr.ecr.$(REGION).amazonaws.com/$(REPO_NAME):$(GIT_COMMIT)
+	docker push $(AWS_ACCOUNT_NUMBER).dkr.ecr.$(REGION).amazonaws.com/$(REPO_NAME):$(GIT_COMMIT)
 
 .PHONY: configured-region
 configured-region:

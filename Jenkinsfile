@@ -21,23 +21,23 @@ pipeline {
         stage('EcrPush') {
             steps {
                 sh '''echo "push start"'''
-                // script {
-                //     readProperties(file: 'Makefile.env').each { key, value -> env[key] = value }
-                // }
+                script {
+                    readProperties(file: 'Makefile.env').each { key, value -> env[key] = value }
+                }
                 sh '''echo "push mid"'''
-                //sh '$(aws ecr get-login --no-include-email --registry-ids $AWS_ACCOUNT_NUMBER)'
-                sh'''
-                    docker login -u AWS -p $(aws ecr-public get-login-password --region us-east-1) 399048314510.dkr.ecr.us-east-1.amazonaws.com
-                    docker push 399048314510.dkr.ecr.us-east-1.amazonaws.com/awesome-api-repository:$(GIT_COMMIT)
-                '''
-                sh '''echo "push done"'''
-                // script {
-                //     def PUSH_RESULT = sh (
-                //     script: "make push-image",
-                //     returnStdout: true
-                //     ).trim()
-                //     echo "Push result: ${PUSH_RESULT}"
-                // }
+                sh '$(aws ecr get-login --no-include-email --registry-ids $AWS_ACCOUNT_NUMBER)'
+                // sh'''
+                //     docker login -u AWS -p $(aws ecr-public get-login-password --region us-east-1) 399048314510.dkr.ecr.us-east-1.amazonaws.com
+                //     docker push 399048314510.dkr.ecr.us-east-1.amazonaws.com/awesome-api-repository:$(GIT_COMMIT)
+                // '''
+                // sh '''echo "push done"'''
+                script {
+                    def PUSH_RESULT = sh (
+                    script: "make push-image",
+                    returnStdout: true
+                    ).trim()
+                    echo "Push result: ${PUSH_RESULT}"
+                }
             }
         }
         stage('SetEnvironment'){

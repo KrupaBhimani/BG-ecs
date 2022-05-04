@@ -21,9 +21,9 @@ pipeline {
         stage('EcrPush') {
             steps {
                 sh '''echo "push start"'''
-                script {
-                    readProperties(file: 'Makefile.env').each { key, value -> env[key] = value }
-                }
+                // script {
+                //     readProperties(file: 'Makefile.env').each { key, value -> env[key] = value }
+                // }
                 sh '''echo "push mid"'''
                 //sh '$(aws ecr get-login --no-include-email --registry-ids $AWS_ACCOUNT_NUMBER)'
                 sh'''
